@@ -7,6 +7,17 @@ import psutil
 
 
 def monitor_process(process_name, duration, interval):
+    """
+    Monitor resource usage of a specified process.
+
+    Args:
+        process_name (str): Name of the process to monitor.
+        duration (int): Duration of monitoring in seconds.
+        interval (int): Sampling interval in seconds.
+
+    Returns:
+        list: List of lists containing metrics (CPU %, memory usage, open handles).
+    """
     process = None
     for proc in psutil.process_iter(attrs=['pid', 'name']):
         if process_name.lower() in proc.info['name'].lower():
@@ -30,6 +41,15 @@ def monitor_process(process_name, duration, interval):
 
 
 def create_csv_report(metrics):
+    """
+    Create a CSV report from collected metrics.
+
+    Args:
+        metrics (list): List of lists containing collected metrics.
+
+    Returns:
+        None
+    """
     avg_cpu = sum([entry[0] for entry in metrics]) / len(metrics)
     avg_memory = sum([entry[1] for entry in metrics]) / len(metrics)
     avg_handles = sum([entry[2] for entry in metrics]) / len(metrics)
